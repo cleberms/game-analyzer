@@ -1,0 +1,23 @@
+###
+### Default rules for Java
+###
+
+
+# ----- JAVA -----
+*.class
+.recommenders
+target/
+Evidences/
+*.meta/
+*.settings/
+*.classpath
+*.jsdtscope
+bin/
+.metadata
+.project
+.idea/
+
+# intellij #
+*.iml
+/-/
+
