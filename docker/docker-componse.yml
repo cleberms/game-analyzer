@@ -1,0 +1,25 @@
+version: '3'
+services:
+  elasticsearch:
+    build:
+      context: ./elasticsearch/
+    image: elasticsearch
+    container_name: elasticsearch
+    hostname: localhost
+    environment:
+      - discovery.type=single-node
+    expose:
+      - "9200"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - game-app
+
+networks:
+  game-app:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.101.101.0/24
