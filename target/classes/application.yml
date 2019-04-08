@@ -1,3 +1,10 @@
+server:
+  port: 8080
+
 elasticsearch:
   host: localhost
   port: 9200
+
+file-log:
+  path: "log/"
+  name: "games.log"
