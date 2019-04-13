@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class GameLogReaderTest {
+public class GameLogReaderUnitTest {
 
     private static final String TEST_FILE_PATH = "src/test/log/";
     private static final String INIT_GAME_LOG = "initGame.log";

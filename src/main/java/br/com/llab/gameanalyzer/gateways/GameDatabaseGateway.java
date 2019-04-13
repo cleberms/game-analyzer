@@ -11,4 +11,6 @@ public interface GameDatabaseGateway {
     Game getByGameNumber(final int gameNumber);
 
     void saveAll(final List<Game> gameList);
+
+    void deleteAll();
 }

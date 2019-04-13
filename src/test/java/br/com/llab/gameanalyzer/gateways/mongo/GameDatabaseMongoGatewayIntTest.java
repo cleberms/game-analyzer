@@ -156,4 +156,17 @@ public class GameDatabaseMongoGatewayIntTest {
 
         return gameList;
     }
+
+    @Test
+    public void shouldDeleteAllGamesSuccessfully() {
+        List<Game> gameList = getListGame();
+
+        repository.saveAll(gameList);
+
+        repository.deleteAll();
+
+        List<Game> result = repository.findAll();
+
+        assertTrue(result.isEmpty());
+    }
 }

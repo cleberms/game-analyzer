@@ -2,6 +2,7 @@ package br.com.llab.gameanalyzer.gateways.mongo;
 
 import br.com.llab.gameanalyzer.domains.Game;
 import br.com.llab.gameanalyzer.gateways.GameDatabaseGateway;
+import br.com.llab.gameanalyzer.gateways.exceptions.ErrorToDeleteGameException;
 import br.com.llab.gameanalyzer.gateways.exceptions.ErrorToFindGamesException;
 import br.com.llab.gameanalyzer.gateways.exceptions.ErrorToSaveGameException;
 import br.com.llab.gameanalyzer.gateways.exceptions.GameNotFoundException;
@@ -52,6 +53,17 @@ public class GameDatabaseMongoGateway implements GameDatabaseGateway {
             System.out.println(ex.getStackTrace());
 
             throw new ErrorToSaveGameException();
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        try {
+            repository.deleteAll();
+        } catch (Exception ex) {
+            System.out.println(ex.getStackTrace());
+
+            throw new ErrorToDeleteGameException();
         }
     }
 }

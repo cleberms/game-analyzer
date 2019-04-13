@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
 
-public class GameAnalysisTest {
+public class GameAnalysisUnitTest {
     @Mock
     private GameLogReader logReader;
 

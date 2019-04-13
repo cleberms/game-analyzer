@@ -1,6 +1,7 @@
 package br.com.llab.gameanalyzer.gateways.mongo;
 
 import br.com.llab.gameanalyzer.domains.Game;
+import br.com.llab.gameanalyzer.gateways.exceptions.ErrorToDeleteGameException;
 import br.com.llab.gameanalyzer.gateways.exceptions.ErrorToFindGamesException;
 import br.com.llab.gameanalyzer.gateways.exceptions.ErrorToSaveGameException;
 import br.com.llab.gameanalyzer.gateways.exceptions.GameNotFoundException;
@@ -96,24 +97,24 @@ public class GameDatabaseMongoGatewayUnitTest {
     @Test
     public void shouldCallGetByGameNumberMethodSuccessfully() {
 
-        when(repository.findByGameNumber(any())).thenReturn(Optional.of(new Game()));
+        when(repository.findByGameNumber(12)).thenReturn(Optional.of(new Game()));
 
         gameDatabaseMongoGateway.getByGameNumber(12);
 
-        verify(repository, VerificationModeFactory.times(1)).findByGameNumber(any());
+        verify(repository, VerificationModeFactory.times(1)).findByGameNumber(12);
     }
 
     @Test(expected = GameNotFoundException.class)
     public void shouldCallGetByGameNumberMethodAndReturnGameNotFoundException() {
 
-        when(repository.findByGameNumber(any())).thenReturn(Optional.empty());
+        when(repository.findByGameNumber(12)).thenReturn(Optional.empty());
 
         try {
             gameDatabaseMongoGateway.getByGameNumber(12);
         } catch (GameNotFoundException ex) {
             assertEquals("Game not found.", ex.getMessage());
 
-            verify(repository, VerificationModeFactory.times(1)).findByGameNumber(any());
+            verify(repository, VerificationModeFactory.times(1)).findByGameNumber(12);
 
             throw  ex;
         }
@@ -122,16 +123,38 @@ public class GameDatabaseMongoGatewayUnitTest {
     @Test(expected = ErrorToFindGamesException.class)
     public void shouldCallGetByGameNumberMethodAndReturnErrorToFindGamesException() {
 
-        when(repository.findByGameNumber(any())).thenThrow(new RuntimeException());
+        when(repository.findByGameNumber(12)).thenThrow(new RuntimeException());
 
         try {
             gameDatabaseMongoGateway.getByGameNumber(12);
         } catch (ErrorToFindGamesException ex) {
             assertEquals("Cannot find any game!", ex.getMessage());
-            verify(repository, VerificationModeFactory.times(1)).findByGameNumber(any());
+            verify(repository, VerificationModeFactory.times(1)).findByGameNumber(12);
 
             throw ex;
         }
+    }
+
+    @Test public void shouldCallDeleteAllMethodSuccessfully() {
+        gameDatabaseMongoGateway.deleteAll();
+
+        verify(repository, VerificationModeFactory.times(1)).deleteAll();
+
+    }
+
+    @Test public void shouldCallDeleteAllMethodException() {
+
+        doThrow(new RuntimeException()).when(repository).deleteAll();
+
+        try {
+            gameDatabaseMongoGateway.deleteAll();
+        } catch (ErrorToDeleteGameException ex) {
+
+            assertEquals("Error to delete game.", ex.getMessage());
+
+            verify(repository, VerificationModeFactory.times(1)).deleteAll();
+        }
+
     }
 
 }
