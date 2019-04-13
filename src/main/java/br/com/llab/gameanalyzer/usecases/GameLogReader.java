@@ -34,6 +34,10 @@ public class GameLogReader {
     @Value("${file-log.name}")
     private String fileName;
 
+    /**
+     * Method make the parser of file log to Game list
+     * @return List<Game>
+     */
     public List<Game> parserLog() {
 
         // initialize methods variable
@@ -90,10 +94,21 @@ public class GameLogReader {
         }
     }
 
+    /**
+     * Verify if new game starts
+     * @param currentLine
+     * @return
+     */
     private boolean shouldIntializeNewGame(final String currentLine) {
         return currentLine.contains(INITIALIZE_GAME_TAG);
     }
 
+    /**
+     * Initialize a new game
+     * @param game
+     * @param gameList
+     * @return
+     */
     private Game initializeNewGame(Game game, List<Game> gameList) {
 
         int currentGameNumber = INT_ONE;
@@ -110,10 +125,21 @@ public class GameLogReader {
         return game;
     }
 
+    /**
+     * Verify if the line contains a user informations
+     * @param currentLine
+     * @return
+     */
     private boolean shouldGetUserinfo(final String currentLine) {
         return currentLine.contains(USER_INFO_TAG);
     }
 
+    /**
+     * Get user informations
+     * @param game
+     * @param playerMap
+     * @param currentLine
+     */
     private void getUserInfo(Game game, HashMap<String, String> playerMap, String currentLine) {
         currentLine = getLineValue(currentLine);
 
@@ -137,10 +163,21 @@ public class GameLogReader {
         return currentLine.replaceAll("(([0-9]*)+\\:+([0-9]*)\\s[a-zA-Z]*+\\:\\s)", EMPTY);
     }
 
+    /**
+     * Verify if contains kills informations
+     * @param currentLine
+     * @return
+     */
     private boolean shouldGetKillInfo(final String currentLine) {
         return currentLine.contains(KILL_TAG);
     }
 
+    /**
+     * Get and map kill informations
+     * @param game
+     * @param playerMap
+     * @param currentLine
+     */
     private void getKillInfo(Game game, HashMap<String, String> playerMap, String currentLine) {
         game.setTotalKills(game.getTotalKills() + INT_ONE);
 
@@ -160,6 +197,12 @@ public class GameLogReader {
         }
     }
 
+    /**
+     * Add kill to an player
+     * @param game
+     * @param playerMap
+     * @param idKiller
+     */
     private void addKillToPlayer(Game game, HashMap<String, String> playerMap, final String idKiller) {
         String playerName = playerMap.get(idKiller);
 
@@ -172,6 +215,12 @@ public class GameLogReader {
         }
     }
 
+    /**
+     * Substract kill to an player
+     * @param game
+     * @param playerMap
+     * @param idKilled
+     */
     private void subtractsPlayerKill(Game game, HashMap<String, String> playerMap, final String idKilled) {
         String playerName = playerMap.get(idKilled);
 
@@ -184,11 +233,22 @@ public class GameLogReader {
         }
     }
 
+    /**
+     * Verify if need shutdown a game
+     * @param game
+     * @param currentLine
+     * @return
+     */
     private boolean shouldShutdownGame(final Game game, final String currentLine) {
         return currentLine.contains(SHUTDOWN_GAME_TAG)
                 || (null != game && currentLine.contains(DOTTED_TAG));
     }
 
+    /**
+     * Finalyze the process to read a log file
+     * @param bufferedReader
+     * @param fileReader
+     */
     private void finalyzeProcess(BufferedReader bufferedReader, FileReader fileReader) {
         try {
             if (bufferedReader != null) {
