@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
@@ -25,6 +26,11 @@ public class GameDatabaseMongoGatewayIntTest {
 
     @Autowired
     private GameRopository repository;
+
+    @Before
+    public void initMocks() {
+        this.repository.deleteAll();
+    }
 
     @Test public void shouldSaveAndFindAllGamesSuccessfully() {
 
@@ -79,6 +85,42 @@ public class GameDatabaseMongoGatewayIntTest {
         assertEquals("Shooter", result.get(1).getKills().get(2).getPlayer());
         assertEquals(Integer.valueOf(3), result.get(1).getKills().get(2).getKillNumber());
         assertEquals("7", result.get(1).getKills().get(2).getIdPlayer());
+    }
+
+    @Test
+    public void shouldFindGameByNumberSuccessfully() {
+
+        List<Game> gameList = getListGame();
+
+        repository.saveAll(gameList);
+
+        Optional<Game> resultOptional = repository.findByGameNumber(2);
+
+        assertTrue(resultOptional.isPresent());
+
+        Game result = resultOptional.get();
+
+        assertEquals(2, result.getGameNumber());
+        assertEquals(14, result.getTotalKills());
+
+        assertEquals(3, result.getPlayers().size());
+        assertEquals("Everykill", result.getPlayers().get(0));
+        assertEquals("ForlixKill", result.getPlayers().get(1));
+        assertEquals("Shooter", result.getPlayers().get(2));
+
+        assertEquals(3, result.getKills().size());
+
+        assertEquals("Everykill", result.getKills().get(0).getPlayer());
+        assertEquals(Integer.valueOf(4), result.getKills().get(0).getKillNumber());
+        assertEquals("5", result.getKills().get(0).getIdPlayer());
+
+        assertEquals("ForlixKill", result.getKills().get(1).getPlayer());
+        assertEquals(Integer.valueOf(7), result.getKills().get(1).getKillNumber());
+        assertEquals("6", result.getKills().get(1).getIdPlayer());
+
+        assertEquals("Shooter", result.getKills().get(2).getPlayer());
+        assertEquals(Integer.valueOf(3), result.getKills().get(2).getKillNumber());
+        assertEquals("7", result.getKills().get(2).getIdPlayer());
     }
 
     private List<Game> getListGame() {

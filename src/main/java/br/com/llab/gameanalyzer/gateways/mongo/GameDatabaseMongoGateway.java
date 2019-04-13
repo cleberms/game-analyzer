@@ -4,10 +4,12 @@ import br.com.llab.gameanalyzer.domains.Game;
 import br.com.llab.gameanalyzer.gateways.GameDatabaseGateway;
 import br.com.llab.gameanalyzer.gateways.exceptions.ErrorToFindGamesException;
 import br.com.llab.gameanalyzer.gateways.exceptions.ErrorToSaveGameException;
+import br.com.llab.gameanalyzer.gateways.exceptions.GameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class GameDatabaseMongoGateway implements GameDatabaseGateway {
@@ -25,6 +27,21 @@ public class GameDatabaseMongoGateway implements GameDatabaseGateway {
 
             throw new ErrorToFindGamesException();
         }
+    }
+
+    @Override public Game getByGameNumber(final int gameNumber) {
+
+        try{
+            Optional<Game> game = repository.findByGameNumber(gameNumber);
+
+            if(game.isPresent()) {
+                return game.get();
+            }
+        } catch (Exception ex) {
+            throw new ErrorToFindGamesException();
+        }
+
+        throw new GameNotFoundException();
     }
 
     @Override

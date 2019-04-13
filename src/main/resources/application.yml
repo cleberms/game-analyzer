@@ -1,9 +1,10 @@
 server:
-  port: 8080
+  port: 8085
 
-elasticsearch:
-  host: localhost
-  port: 9200
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test?serverSelectionTimeoutMS=1000&connectTimeoutMS=1000
 
 file-log:
   path: "log/"
