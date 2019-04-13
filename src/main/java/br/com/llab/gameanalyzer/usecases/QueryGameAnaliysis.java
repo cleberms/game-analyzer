@@ -17,7 +17,7 @@ public class QueryGameAnaliysis {
         return gateway.getAll();
     }
 
-    public List<Game> query(final String gameNumber) {
-        return gateway.getAll();
+    public Game query(final int gameNumber) {
+        return gateway.getByGameNumber(gameNumber);
     }
 }
