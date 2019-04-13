@@ -22,12 +22,18 @@ public class GameDatabaseMongoGateway implements GameDatabaseGateway {
     public List<Game> getAll() {
 
         try {
-            return repository.findAll();
+            List<Game> list = repository.findAll();
+
+            if(!list.isEmpty()) {
+                return list;
+            }
         } catch (Exception ex) {
             System.out.println(ex.getStackTrace());
 
             throw new ErrorToFindGamesException();
         }
+
+        throw new GameNotFoundException();
     }
 
     @Override public Game getByGameNumber(final int gameNumber) {

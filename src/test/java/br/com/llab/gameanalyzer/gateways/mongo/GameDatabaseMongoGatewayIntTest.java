@@ -123,6 +123,19 @@ public class GameDatabaseMongoGatewayIntTest {
         assertEquals("7", result.getKills().get(2).getIdPlayer());
     }
 
+    @Test
+    public void shouldDeleteAllGamesSuccessfully() {
+        List<Game> gameList = getListGame();
+
+        repository.saveAll(gameList);
+
+        repository.deleteAll();
+
+        List<Game> result = repository.findAll();
+
+        assertTrue(result.isEmpty());
+    }
+
     private List<Game> getListGame() {
         List<Game> gameList = new ArrayList<>();
 
@@ -155,18 +168,5 @@ public class GameDatabaseMongoGatewayIntTest {
         gameList.add(game);
 
         return gameList;
-    }
-
-    @Test
-    public void shouldDeleteAllGamesSuccessfully() {
-        List<Game> gameList = getListGame();
-
-        repository.saveAll(gameList);
-
-        repository.deleteAll();
-
-        List<Game> result = repository.findAll();
-
-        assertTrue(result.isEmpty());
     }
 }

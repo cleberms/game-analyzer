@@ -35,10 +35,36 @@ public class GameDatabaseMongoGatewayUnitTest {
     }
 
     @Test public void shouldCallGetAllMethodSuccessfully() {
-        gameDatabaseMongoGateway.getAll();
 
+        List<Game> gameList = new ArrayList<>();
+        Game game = new Game();
+        game.setGameNumber(1);
+
+        gameList.add(game);
+
+        when(repository.findAll()).thenReturn(gameList);
+
+        List<Game> result = gameDatabaseMongoGateway.getAll();
+
+        assertEquals(gameList, result);
         verify(repository, VerificationModeFactory.times(1)).findAll();
 
+    }
+
+    @Test(expected = GameNotFoundException.class)
+    public void shouldCallGetAllMethodReturnNotFound() {
+
+        when(repository.findAll()).thenReturn(new ArrayList<>());
+
+        try {
+            gameDatabaseMongoGateway.getAll();
+        } catch (GameNotFoundException ex) {
+
+            assertEquals("Game not found.", ex.getMessage());
+            verify(repository, VerificationModeFactory.times(1)).findAll();
+
+            throw ex;
+        }
     }
 
     @Test (expected = ErrorToFindGamesException.class)
