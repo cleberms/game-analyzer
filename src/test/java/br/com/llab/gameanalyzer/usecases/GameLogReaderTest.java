@@ -65,8 +65,16 @@ public class GameLogReaderTest {
 
         assertEquals(1, gameList.size());
         assertEquals(9, gameList.get(0).getTotalKills());
-        assertEquals(Integer.valueOf(1), gameList.get(0).getKills().get("Isgalamido"));
-        assertEquals(Integer.valueOf(2), gameList.get(0).getKills().get("Mocinha"));
+
+        assertEquals(2, gameList.get(0).getKills().size());
+
+        assertEquals("Isgalamido", gameList.get(0).getKills().get(0).getPlayer());
+        assertEquals("2", gameList.get(0).getKills().get(0).getIdPlayer());
+        assertEquals(Integer.valueOf(1), gameList.get(0).getKills().get(0).getKillNumber());
+
+        assertEquals("Mocinha", gameList.get(0).getKills().get(1).getPlayer());
+        assertEquals("3", gameList.get(0).getKills().get(1).getIdPlayer());
+        assertEquals(Integer.valueOf(2), gameList.get(0).getKills().get(1).getKillNumber());
     }
 
     @Test
@@ -82,17 +90,28 @@ public class GameLogReaderTest {
         assertEquals(1, gameList.get(0).getPlayers().size());
         assertEquals("Isgalamido", gameList.get(0).getPlayers().get(0));
         assertEquals(0, gameList.get(0).getTotalKills());
+
         assertEquals(1, gameList.get(0).getKills().size());
-        assertEquals(Integer.valueOf(0), gameList.get(0).getKills().get("Isgalamido"));
+
+        assertEquals("Isgalamido", gameList.get(0).getKills().get(0).getPlayer());
+        assertEquals("2", gameList.get(0).getKills().get(0).getIdPlayer());
+        assertEquals(Integer.valueOf(0), gameList.get(0).getKills().get(0).getKillNumber());
 
         assertEquals(2, gameList.get(1).getGameNumber());
         assertEquals(2, gameList.get(1).getPlayers().size());
         assertEquals("Isgalamido", gameList.get(1).getPlayers().get(0));
         assertEquals("Mocinha", gameList.get(1).getPlayers().get(1));
         assertEquals(11, gameList.get(1).getTotalKills());
+
         assertEquals(2, gameList.get(1).getKills().size());
-        assertEquals(Integer.valueOf(-9), gameList.get(1).getKills().get("Isgalamido"));
-        assertEquals(Integer.valueOf(0), gameList.get(1).getKills().get("Mocinha"));
+
+        assertEquals("Isgalamido", gameList.get(1).getKills().get(0).getPlayer());
+        assertEquals(Integer.valueOf(-9), gameList.get(1).getKills().get(0).getKillNumber());
+        assertEquals("2", gameList.get(1).getKills().get(0).getIdPlayer());
+
+        assertEquals("Mocinha", gameList.get(1).getKills().get(1).getPlayer());
+        assertEquals(Integer.valueOf(0), gameList.get(1).getKills().get(1).getKillNumber());
+        assertEquals("3", gameList.get(1).getKills().get(1).getIdPlayer());
 
         assertEquals(3, gameList.get(2).getGameNumber());
         assertEquals(3, gameList.get(2).getPlayers().size());
@@ -100,10 +119,20 @@ public class GameLogReaderTest {
         assertEquals("Isgalamido", gameList.get(2).getPlayers().get(1));
         assertEquals("Zeh", gameList.get(2).getPlayers().get(2));
         assertEquals(4, gameList.get(2).getTotalKills());
+
         assertEquals(3, gameList.get(2).getKills().size());
-        assertEquals(Integer.valueOf(-1), gameList.get(2).getKills().get("Dono da Bola"));
-        assertEquals(Integer.valueOf(1), gameList.get(2).getKills().get("Isgalamido"));
-        assertEquals(Integer.valueOf(-2), gameList.get(2).getKills().get("Zeh"));
+
+        assertEquals(Integer.valueOf(1), gameList.get(2).getKills().get(0).getKillNumber());
+        assertEquals("Isgalamido", gameList.get(2).getKills().get(0).getPlayer());
+        assertEquals("3", gameList.get(2).getKills().get(0).getIdPlayer());
+
+        assertEquals(Integer.valueOf(-2), gameList.get(2).getKills().get(1).getKillNumber());
+        assertEquals("Zeh", gameList.get(2).getKills().get(1).getPlayer());
+        assertEquals("4", gameList.get(2).getKills().get(1).getIdPlayer());
+
+        assertEquals(Integer.valueOf(-1), gameList.get(2).getKills().get(2).getKillNumber());
+        assertEquals("Dono da Bola", gameList.get(2).getKills().get(2).getPlayer());
+        assertEquals("2", gameList.get(2).getKills().get(2).getIdPlayer());
     }
 
     @Test(expected = RuntimeException.class)

@@ -2,6 +2,7 @@ package br.com.llab.gameanalyzer.gateways.mongo;
 
 import br.com.llab.gameanalyzer.configs.FongoConfiguration;
 import br.com.llab.gameanalyzer.domains.Game;
+import br.com.llab.gameanalyzer.domains.Kill;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +45,18 @@ public class GameDatabaseMongoGatewayIntTest {
         assertEquals("SniperCerto", result.get(0).getPlayers().get(2));
 
         assertEquals(3, result.get(0).getKills().size());
-        assertEquals(Integer.valueOf(5), result.get(0).getKills().get("JrMatador"));
-        assertEquals(Integer.valueOf(10), result.get(0).getKills().get("MKiller"));
-        assertEquals(Integer.valueOf(2), result.get(0).getKills().get("SniperCerto"));
+
+        assertEquals("JrMatador", result.get(0).getKills().get(0).getPlayer());
+        assertEquals(Integer.valueOf(5), result.get(0).getKills().get(0).getKillNumber());
+        assertEquals("1", result.get(0).getKills().get(0).getIdPlayer());
+
+        assertEquals("MKiller", result.get(0).getKills().get(1).getPlayer());
+        assertEquals(Integer.valueOf(10), result.get(0).getKills().get(1).getKillNumber());
+        assertEquals("2", result.get(0).getKills().get(1).getIdPlayer());
+
+        assertEquals("SniperCerto", result.get(0).getKills().get(2).getPlayer());
+        assertEquals(Integer.valueOf(2), result.get(0).getKills().get(2).getKillNumber());
+        assertEquals("3", result.get(0).getKills().get(2).getIdPlayer());
 
         assertEquals(2, result.get(1).getGameNumber());
         assertEquals(14, result.get(1).getTotalKills());
@@ -57,36 +67,47 @@ public class GameDatabaseMongoGatewayIntTest {
         assertEquals("Shooter", result.get(1).getPlayers().get(2));
 
         assertEquals(3, result.get(1).getKills().size());
-        assertEquals(Integer.valueOf(4), result.get(1).getKills().get("Everykill"));
-        assertEquals(Integer.valueOf(7), result.get(1).getKills().get("ForlixKill"));
-        assertEquals(Integer.valueOf(3), result.get(1).getKills().get("Shooter"));
+
+        assertEquals("Everykill", result.get(1).getKills().get(0).getPlayer());
+        assertEquals(Integer.valueOf(4), result.get(1).getKills().get(0).getKillNumber());
+        assertEquals("5", result.get(1).getKills().get(0).getIdPlayer());
+
+        assertEquals("ForlixKill", result.get(1).getKills().get(1).getPlayer());
+        assertEquals(Integer.valueOf(7), result.get(1).getKills().get(1).getKillNumber());
+        assertEquals("6", result.get(1).getKills().get(1).getIdPlayer());
+
+        assertEquals("Shooter", result.get(1).getKills().get(2).getPlayer());
+        assertEquals(Integer.valueOf(3), result.get(1).getKills().get(2).getKillNumber());
+        assertEquals("7", result.get(1).getKills().get(2).getIdPlayer());
     }
 
     private List<Game> getListGame() {
         List<Game> gameList = new ArrayList<>();
 
-        Map<String, Integer> mapKills = new HashMap<>();
-        mapKills.put("JrMatador", 5);
-        mapKills.put("MKiller", 10);
-        mapKills.put("SniperCerto", 2);
+        List<Kill> killList = new ArrayList<>();
+
+        killList.add(new Kill("1", "JrMatador", 5));
+        killList.add(new Kill("2", "MKiller", 10));
+        killList.add(new Kill("3", "SniperCerto", 2));
 
         Game game = new Game();
         game.setGameNumber(1);
         game.setPlayers(Arrays.asList("JrMatador", "MKiller", "SniperCerto"));
-        game.setKills(mapKills);
+        game.setKills(killList);
         game.setTotalKills(17);
 
         gameList.add(game);
 
-        mapKills = new HashMap<>();
-        mapKills.put("Everykill", 4);
-        mapKills.put("ForlixKill", 7);
-        mapKills.put("Shooter", 3);
+        killList = new ArrayList<>();
+
+        killList.add(new Kill("5", "Everykill", 4));
+        killList.add(new Kill("6", "ForlixKill", 7));
+        killList.add(new Kill("7", "Shooter", 3));
 
         game = new Game();
         game.setGameNumber(2);
         game.setPlayers(Arrays.asList("Everykill", "ForlixKill", "Shooter"));
-        game.setKills(mapKills);
+        game.setKills(killList);
         game.setTotalKills(14);
 
         gameList.add(game);

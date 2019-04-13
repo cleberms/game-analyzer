@@ -25,5 +25,5 @@ public class Game {
     private List<String> players;
 
     @Field("mortes")
-    private Map<String, Integer> kills;
+    private List<Kill> kills;
 }

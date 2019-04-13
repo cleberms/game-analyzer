@@ -1,16 +1,14 @@
 package br.com.llab.gameanalyzer.usecases;
 
 import br.com.llab.gameanalyzer.domains.Game;
+import br.com.llab.gameanalyzer.domains.Kill;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class GameLogReader {
@@ -61,15 +59,21 @@ public class GameLogReader {
                 currentLine.trim();
 
                 if(shouldIntializeNewGame(currentLine)){
+                    playerMap = new HashMap<>();
                     game = initializeNewGame(game, gameList);
 
                 } else  if(shouldShutdownGame(game, currentLine)) {
 
                     if(game.getKills().size() != playerMap.size()) {
 
-                        for(String value : playerMap.values()) {
-                            if(!game.getKills().containsKey(value)) {
-                                game.getKills().put(value, INT_ZERO);
+                        for(String key : playerMap.keySet()) {
+
+                            Optional<Kill> kill = game.getKills().stream().filter(k ->
+                                    k.getIdPlayer().equalsIgnoreCase(key)
+                            ).findFirst();
+
+                            if(!kill.isPresent()) {
+                                game.getKills().add(new Kill(key, playerMap.get(key), INT_ZERO));
                             }
                         }
                     }
@@ -119,7 +123,7 @@ public class GameLogReader {
 
         game = new Game();
         game.setGameNumber(currentGameNumber);
-        game.setKills(new HashMap<>());
+        game.setKills(new ArrayList<>());
         game.setPlayers(new ArrayList<>());
 
         return game;
@@ -204,14 +208,17 @@ public class GameLogReader {
      * @param idKiller
      */
     private void addKillToPlayer(Game game, HashMap<String, String> playerMap, final String idKiller) {
-        String playerName = playerMap.get(idKiller);
 
-        if(game.getKills().containsKey(playerName)) {
-            Integer kill = game.getKills().get(playerName) + 1;
+        Optional<Kill> kill = game.getKills().stream().filter(k ->
+           k.getIdPlayer().equalsIgnoreCase(idKiller)
+        ).findFirst();
 
-            game.getKills().put(playerName, kill);
+        if(kill.isPresent()) {
+            Integer killNumber = kill.get().getKillNumber() + 1;
+
+            kill.get().setKillNumber(killNumber);
         } else {
-            game.getKills().put(playerName, 1);
+            game.getKills().add(new Kill(idKiller, playerMap.get(idKiller), 1));
         }
     }
 
@@ -222,14 +229,18 @@ public class GameLogReader {
      * @param idKilled
      */
     private void subtractsPlayerKill(Game game, HashMap<String, String> playerMap, final String idKilled) {
-        String playerName = playerMap.get(idKilled);
 
-        if(game.getKills().containsKey(playerName)) {
-            Integer kill = game.getKills().get(playerName) - 1;
 
-            game.getKills().put(playerName, kill);
+        Optional<Kill> kill = game.getKills().stream().filter(k ->
+                k.getIdPlayer().equalsIgnoreCase(idKilled)
+        ).findFirst();
+
+        if(kill.isPresent()) {
+            Integer killNumber = kill.get().getKillNumber() - 1;
+
+            kill.get().setKillNumber(killNumber);
         } else {
-            game.getKills().put(playerName, -1);
+            game.getKills().add(new Kill(idKilled, playerMap.get(idKilled), -1));
         }
     }
 
