@@ -1,18 +1,14 @@
 version: '3'
 services:
-  elasticsearch:
+  mongo:
     build:
-      context: ./elasticsearch/
-    image: elasticsearch
-    container_name: elasticsearch
-    hostname: localhost
-    environment:
-      - discovery.type=single-node
-    expose:
-      - "9200"
+      context: ./mongo/
+    image: mongo
+    hostname: mongo
+    container_name: mongo
+    restart: always
     ports:
-      - 9200:9200
-      - 9300:9300
+      - "27017:27017"
     networks:
       - game-app
 
