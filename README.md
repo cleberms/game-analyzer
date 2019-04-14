@@ -1,4 +1,4 @@
-# Backend Advanced Test
+# Backend Test
  Candidate: Cleber Santaterra
  
  ### Project
@@ -15,13 +15,13 @@
   
   All analyzes are saved in the mongo database and made available by the API
   
-  ####Mongo Database
+  #### Mongo Database
   Mongo is hosted on heroku server
   
-  Host: ds213513.mlab.com<br>
-  Database: heroku_0nngbvrm<br>
-  User: mlivre<br>
-  Pass: mlivre2014
+  *Host*: ds213513.mlab.com<br>
+  *Database*: heroku_0nngbvrm<br>
+  *User*: mlivre<br>
+  *Pass*: mlivre2014
   
   ### Start application
   In directory on project execute:
