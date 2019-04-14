@@ -92,6 +92,9 @@ public class GameLogReader {
 
             return gameList;
         } catch (Exception ex) {
+
+            System.out.println(ex.getStackTrace());
+
             throw new RuntimeException("Error to complete parser process");
         } finally {
             finalyzeProcess(bufferedReader, fileReader);

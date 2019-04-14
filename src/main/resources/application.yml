@@ -4,7 +4,8 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/test?serverSelectionTimeoutMS=1000&connectTimeoutMS=1000
+      #uri: mongodb://localhost:27017/test?serverSelectionTimeoutMS=1000&connectTimeoutMS=1000
+      uri: ${MONGODB_URI:mongodb://heroku_0nngbvrm:29bnvmu1j994a96lqmdim9pju6@ds213513.mlab.com:13513/heroku_0nngbvrm}
 
 file-log:
   path: "log/"
